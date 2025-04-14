@@ -1,1 +1,1 @@
-export type APITypes = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type APITypes = "GET" | "POST" | "PUT" | "DELETE";

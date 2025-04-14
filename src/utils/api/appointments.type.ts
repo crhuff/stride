@@ -1,5 +1,5 @@
-type AppointmentType = 'Initial Evaluation' | 'Follow Up' | 'Discharge';
-type AppointmentStatus = 'Scheduled' | 'Checked In' | 'Canceled';
+type AppointmentType = "Initial Evaluation" | "Follow Up" | "Discharge";
+type AppointmentStatus = "Scheduled" | "Checked In" | "Canceled";
 
 type Appointment = {
   id?: string;

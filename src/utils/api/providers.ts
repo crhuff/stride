@@ -3,13 +3,15 @@ import { Provider } from "./providers.type";
 
 const getProviders = async (): Promise<Provider[]> => {
   try {
-    return await getApiData<undefined, Provider[]>(`providers`, 'GET', undefined);
+    return await getApiData<undefined, Provider[]>(
+      `providers`,
+      "GET",
+      undefined,
+    );
   } catch (err) {
-    console.log('getProviders: ', err)
+    console.log("getProviders: ", err);
     throw err;
   }
 };
-    
-export {
-  getProviders,
-};
+
+export { getProviders };
