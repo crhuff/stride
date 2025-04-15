@@ -1,14 +1,17 @@
 import { DataGrid, DataGridProps, GridColDef } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
-export type Column<T> = {
+export type Column<T> = Omit<
+  GridColDef,
+  "key" | "title" | "isDate" | "field" | "headerName"
+> & {
   key: keyof T; // Ensures the key matches a property in the data object
   title: string;
   isDate?: boolean;
 };
 
 type TableProps<T> = Omit<DataGridProps, "columns" | "pageSize"> & {
-  data: Array<T>; // Array of data objects
+  data: Array<T & { id?: string | number }>; // Array of data objects
   columns: Array<Column<T>>; // Array of column definitions
   pageSize?: number; // Optional: Number of rows per page
 };
@@ -21,6 +24,7 @@ const BuiltTable = <T,>({
 }: TableProps<T>) => {
   // Map columns to DataGrid's GridColDef format
   const gridColumns: GridColDef[] = columns.map((column) => ({
+    ...column,
     field: String(column.key),
     headerName: column.title,
     flex: 1, // Adjust column width dynamically
@@ -33,7 +37,10 @@ const BuiltTable = <T,>({
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
-        rows={data.map((row, index) => ({ id: index, ...row }))}
+        rows={data.map((row, index) => ({
+          id: row?.id || index,
+          ...row,
+        }))}
         columns={gridColumns}
         initialState={{
           pagination: { paginationModel: { page: 0, pageSize } },

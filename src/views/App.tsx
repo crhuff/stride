@@ -6,10 +6,11 @@ import Patients from "./Patient/Patients";
 import Appointments from "./Appointment/Appointments";
 import AppointmentCreate from "./Appointment/create/AppointmentCreate";
 import PatientDetail from "./Patient/PatientDetail/PatientDetail";
+import CacheProvider from "../utils/fetcher/cache";
 
 function App() {
   return (
-    <>
+    <CacheProvider>
       <Router>
         <div>
           <Header />
@@ -25,7 +26,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </>
+    </CacheProvider>
   );
 }
 

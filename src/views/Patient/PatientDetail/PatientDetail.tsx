@@ -1,13 +1,19 @@
 import { useParams } from "react-router-dom";
-import { Card, CardContent, Typography } from "@mui/material";
-import { useGetPatient } from "../../../utils";
+import { Button, Card, CardContent, Typography } from "@mui/material";
+import { useGetAppointments, useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import PatientAppointmentTable from "./PatientAppointmentTable";
+import { useState } from "react";
+import AppointmentCreateModal from "../../Appointment/create/AppointmentCreateModal";
 
 const PatientDetail = () => {
   const patientId = useParams().id as string;
   const patientResponse = useGetPatient(patientId);
+  const appointmentsResponse = useGetAppointments(patientId);
   const isLoading = patientResponse.loading;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
+
   if (isLoading) {
     return (
       <Card>
@@ -52,7 +58,27 @@ const PatientDetail = () => {
           </Typography>
         </CardContent>
       </Card>
-      <PatientAppointmentTable patientId={patientId} />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setModalOpen(true)}
+      >
+        Create new Appointment
+      </Button>
+      <PatientAppointmentTable
+        patientId={patientId}
+        refetchTrigger={refetchTrigger}
+      />
+      <AppointmentCreateModal
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onDone={() => {
+          appointmentsResponse.refetch();
+          setRefetchTrigger((prev) => prev + 1); // Update refetchTrigger
+          setModalOpen(false);
+        }}
+        patientId={patientId}
+      />
     </>
   );
 };

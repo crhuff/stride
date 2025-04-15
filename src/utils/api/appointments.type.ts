@@ -13,9 +13,6 @@ type Appointment = {
   createdAt: string;
 };
 
-type NewAppointment = Omit<
-  Appointment,
-  "id" | "createdAt" | "providerId" | "patientId"
->;
+type NewAppointment = Omit<Appointment, "id" | "createdAt" | "patientId">;
 
 export type { Appointment, NewAppointment, AppointmentType, AppointmentStatus };

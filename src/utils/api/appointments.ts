@@ -15,7 +15,7 @@ const useGetAppointment = (
   appointmentId: string,
   { options }: { options?: Options } = {},
 ) =>
-  useFetchData<Appointment[]>({
+  useFetchData<Appointment>({
     route: `patients/${patientId}/appointments/${appointmentId}`,
     options,
   });

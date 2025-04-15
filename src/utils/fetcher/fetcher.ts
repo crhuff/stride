@@ -1,5 +1,6 @@
 import { APITypes } from "./types";
 import { useEffect, useMemo, useState } from "react";
+import { useCache } from "./useCache";
 
 type RetrieveResponse<T> = {
   data: T | null;
@@ -44,8 +45,6 @@ const modifyData = async <Params, Result>({
   return { error, data };
 };
 
-const cache = new Map<string, { data: unknown | null; timestamp: number }>();
-
 export type Options = {
   fetchOnMount?: boolean;
 };
@@ -61,6 +60,8 @@ const useFetchData = <Result>({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [forceRefetch, setForceRefetch] = useState(false);
+  const { getCache, setCache, deleteCache } = useCache();
+
   // Build default payload
   const payload = useMemo(
     () =>
@@ -72,20 +73,16 @@ const useFetchData = <Result>({
       }) as RequestInit,
     [],
   );
+
   useEffect(() => {
     const fetchData = async () => {
-      const cacheKey = route;
-      const cachedResponse = cache.get(cacheKey);
-      const now = Date.now();
-
-      if (
-        cachedResponse &&
-        now - cachedResponse.timestamp < 60000 &&
-        !forceRefetch &&
-        !options.fetchOnMount
-      ) {
-        setData(cachedResponse.data as Result);
-        setLoading(false);
+      if (forceRefetch) {
+        deleteCache(route);
+        setData(null);
+      }
+      if (getCache<Result>(route) && !forceRefetch) {
+        setData(getCache<Result>(route) ?? null);
+        setError(null);
         return;
       }
       setLoading(true);
@@ -98,7 +95,7 @@ const useFetchData = <Result>({
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-        cache.set(cacheKey, { data, timestamp: now });
+        setCache<Result>(route, data, 60);
         setLoading(false);
         setData(data);
       } catch (err) {
@@ -109,7 +106,15 @@ const useFetchData = <Result>({
       }
     };
     fetchData();
-  }, [payload, route, forceRefetch, options.fetchOnMount]);
+  }, [
+    payload,
+    route,
+    forceRefetch,
+    options.fetchOnMount,
+    getCache,
+    setCache,
+    deleteCache,
+  ]);
 
   const refetch = () => setForceRefetch(true);
 

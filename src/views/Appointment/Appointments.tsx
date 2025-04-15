@@ -18,7 +18,7 @@ const Appointments: React.FC = () => {
       selectedDate &&
       appointment.date.toDateString() === selectedDate.toDate()?.toDateString(),
   );
-  console.log(appointments);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ p: 3 }}>

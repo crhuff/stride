@@ -1,12 +1,20 @@
+import { useEffect, useState } from "react";
 import TableSkeleton from "../../../components/Table/TableSkeleton";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import BuiltTable, { Column } from "../../../components/Table/Table";
-import { useGetAppointments, useGetProviders } from "../../../utils";
+import {
+  deleteAppointment,
+  useGetAppointments,
+  useGetProviders,
+} from "../../../utils";
 import {
   Appointment,
   AppointmentStatus,
   AppointmentType,
 } from "../../../utils/api/appointments.type";
+import { GridRenderCellParams } from "@mui/x-data-grid";
+import ActionsColumn, { Action } from "../../../components/Table/ActionsColumn";
+import AppointmentUpdateModal from "../../Appointment/AppointmentUpdateModal";
 
 type FormattedAppointment = {
   id: string;
@@ -17,11 +25,40 @@ type FormattedAppointment = {
   type: AppointmentType;
   status: AppointmentStatus;
   createdAt: string;
+  actions?: string; // Add an optional 'actions' property
 };
 
-const PatientAppointmentTable = ({ patientId }: { patientId: string }) => {
+const PatientAppointmentTable = ({
+  patientId,
+  refetchTrigger,
+}: {
+  patientId: string;
+  refetchTrigger: number;
+}) => {
   const appointmentsResponse = useGetAppointments(patientId);
   const providersResponse = useGetProviders();
+  const [editModalId, setEditModalId] = useState<string | null>(null);
+
+  useEffect(() => {
+    appointmentsResponse.refetch(); // Re-fetch appointments when refetchTrigger changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchTrigger]);
+
+  const handleDelete = async (id: string) => {
+    // Logic to delete the appointment
+    console.log(`Delete appointment with id: ${id}`);
+    try {
+      await deleteAppointment(patientId, id);
+      appointmentsResponse.refetch();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    // Logic to edit the appointment
+    setEditModalId(id);
+  };
 
   const columns: Column<FormattedAppointment>[] = [
     { key: "provider", title: "Provider" },
@@ -31,8 +68,21 @@ const PatientAppointmentTable = ({ patientId }: { patientId: string }) => {
     { key: "type", title: "Type" },
     { key: "status", title: "Status" },
     { key: "createdAt", title: "Created at", isDate: true },
-  ];
+    {
+      key: "actions",
+      title: "Actions",
+      renderCell: (
+        params: GridRenderCellParams<FormattedAppointment, Date>,
+      ) => {
+        const actions: Action[] = [
+          { id: "edit", text: "Edit", onClick: handleEdit },
+          { id: "delete", text: "Delete", onClick: handleDelete },
+        ];
 
+        return <ActionsColumn rowId={params.row.id} actions={actions} />;
+      },
+    },
+  ];
   if (appointmentsResponse.loading || providersResponse.loading) {
     return <TableSkeleton columns={columns} />;
   }
@@ -74,8 +124,21 @@ const PatientAppointmentTable = ({ patientId }: { patientId: string }) => {
       };
     },
   );
-  console.log(appointments);
 
-  return <BuiltTable data={appointmentsFormatted} columns={columns} />;
+  return (
+    <>
+      <BuiltTable data={appointmentsFormatted} columns={columns} />
+      <AppointmentUpdateModal
+        open={!!editModalId}
+        onClose={() => setEditModalId(null)}
+        onDone={() => {
+          appointmentsResponse.refetch();
+          setEditModalId(null);
+        }}
+        appointmentId={editModalId || ""}
+        patientId={patientId}
+      />
+    </>
+  );
 };
 export default PatientAppointmentTable;
