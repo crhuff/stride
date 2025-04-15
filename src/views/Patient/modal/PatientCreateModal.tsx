@@ -41,6 +41,7 @@ const PatientCreateModal = ({
     newPatient.firstName &&
     newPatient.lastName &&
     newPatient.dateOfBirth &&
+    new Date(newPatient.dateOfBirth) > new Date() &&
     newPatient.phoneNumber;
 
   useEffect(() => {
@@ -146,13 +147,21 @@ const PatientCreateModal = ({
             <TextField
               label="Date of Birth"
               name="dateOfBirth"
+              type="date"
               value={newPatient.dateOfBirth}
               onChange={handleInputChange}
-              error={!newPatient.dateOfBirth && patientFieldTouched.dateOfBirth}
+              error={
+                (!newPatient.dateOfBirth && patientFieldTouched.dateOfBirth) ||
+                (new Date(newPatient.dateOfBirth) > new Date() &&
+                  patientFieldTouched.dateOfBirth)
+              }
               helperText={
                 !newPatient.dateOfBirth && patientFieldTouched.dateOfBirth
                   ? "Date of birth is required"
-                  : ""
+                  : new Date(newPatient.dateOfBirth) > new Date() &&
+                      patientFieldTouched.dateOfBirth
+                    ? "Date of birth must be in the past"
+                    : ""
               }
               fullWidth
             />

@@ -171,6 +171,7 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
               label="Start Date & Time"
               type="datetime-local"
               name="startTime"
+              slotProps={{ inputLabel: { shrink: true } }}
               fullWidth
               value={newAppointment.startTime}
               onChange={handleInputChange}
@@ -189,6 +190,7 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
               name="endTime"
               fullWidth
               value={newAppointment.endTime}
+              slotProps={{ inputLabel: { shrink: true } }}
               onChange={handleInputChange}
               error={!newAppointment.endTime && appointmentFieldTouched.endTime}
               helperText={

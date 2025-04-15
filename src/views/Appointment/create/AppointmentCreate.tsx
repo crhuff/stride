@@ -186,6 +186,7 @@ const AppointmentCreate = () => {
             label="Start Date & Time"
             type="datetime-local"
             name="startTime"
+            slotProps={{ inputLabel: { shrink: true } }}
             fullWidth
             value={newAppointment.startTime}
             onChange={handleInputChange}
@@ -202,6 +203,7 @@ const AppointmentCreate = () => {
             label="End Date & Time"
             type="datetime-local"
             name="endTime"
+            slotProps={{ inputLabel: { shrink: true } }}
             fullWidth
             value={newAppointment.endTime}
             onChange={handleInputChange}
