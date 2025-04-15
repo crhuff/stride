@@ -5,6 +5,7 @@ import Home from "./Home/Home";
 import Patients from "./Patient/Patients";
 import Appointments from "./Appointment/Appointments";
 import AppointmentCreate from "./Appointment/create/AppointmentCreate";
+import PatientDetail from "./Patient/PatientDetail/PatientDetail";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/patients" element={<Patients />} />
+            <Route path="/patients/:id" element={<PatientDetail />} />
             <Route
               path="/appointments/create"
               element={<AppointmentCreate />}

@@ -2,9 +2,9 @@ type AppointmentType = "Initial Evaluation" | "Follow Up" | "Discharge";
 type AppointmentStatus = "Scheduled" | "Checked In" | "Canceled";
 
 type Appointment = {
-  id?: string;
-  patientId?: string;
-  providerId?: string;
+  id: string;
+  patientId: string;
+  providerId: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -13,4 +13,9 @@ type Appointment = {
   createdAt: string;
 };
 
-export type { Appointment };
+type NewAppointment = Omit<
+  Appointment,
+  "id" | "createdAt" | "providerId" | "patientId"
+>;
+
+export type { Appointment, NewAppointment, AppointmentType, AppointmentStatus };

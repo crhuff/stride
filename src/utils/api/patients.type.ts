@@ -4,7 +4,9 @@ type Patient = {
   dateOfBirth: string;
   createdAt: string;
   phoneNumber: string;
-  id?: string;
+  id: string;
 };
 
-export type { Patient };
+type NewPatient = Omit<Patient, "id" | "createdAt">;
+
+export type { Patient, NewPatient };

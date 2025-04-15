@@ -1,38 +1,40 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { useState } from "react";
+import PatientTable from "./PatientTable";
+import { Box, Typography, Button } from "@mui/material";
+import PatientCreateModal from "./PatientCreateModal";
+import { useNavigate } from "react-router-dom";
+import nav from "../../utils/nav";
 
 const Patients = () => {
-  const patients = [
-    { firstName: "John", lastName: "Doe" },
-    { firstName: "Jane", lastName: "Smith" },
-  ];
+  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {patients.map((patient, index) => (
-            <TableRow key={index}>
-              <TableCell>{patient.firstName}</TableCell>
-              <TableCell>{patient.lastName}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h4">Current Patients</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setModalOpen(true)}
+        >
+          Add New Patient
+        </Button>
+      </Box>
+      <PatientTable />
+      <PatientCreateModal
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onDone={(patientId: string) => {
+          navigate(nav.toPatientDetail(patientId));
+        }}
+      />
+    </>
   );
 };
 export default Patients;

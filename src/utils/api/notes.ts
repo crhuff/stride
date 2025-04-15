@@ -1,94 +1,47 @@
-import { getApiData } from "../fetcher/fetcher";
-import { Note } from "./notes.type";
+import { useFetchData, modifyData } from "../fetcher/fetcher";
+import { NewNote, Note } from "./notes.type";
 
-const getNotes = async (
-  patientId: string,
-  appointmentId: string,
-): Promise<Note[]> => {
-  try {
-    return await getApiData<undefined, Note[]>(
-      `patients/${patientId}/appointments/${appointmentId}/notes`,
-      "GET",
-      undefined,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("getNotes: ", err);
-    throw err;
-  }
-};
+const useGetNotes = (patientId: string, appointmentId: string) =>
+  useFetchData<Note[]>({
+    route: `patients/${patientId}/appointments/${appointmentId}/notes`,
+  });
 
-const getNote = async (
-  patientId: string,
-  appointmentId: string,
-  noteId: string,
-): Promise<Note> => {
-  try {
-    return await getApiData<undefined, Note>(
-      `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
-      "GET",
-      undefined,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("getNote: ", err);
-    throw err;
-  }
-};
+const useGetNote = (patientId: string, appointmentId: string, noteId: string) =>
+  useFetchData<Note>({
+    route: `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
+  });
 
 const createNote = async (
   patientId: string,
   appointmentId: string,
-  note: Note,
-): Promise<unknown> => {
-  try {
-    return await getApiData<Note, unknown>(
-      `patients/${patientId}/appointments/${appointmentId}/notes`,
-      "POST",
-      note,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("createNote: ", err);
-    throw err;
-  }
-};
+  note: NewNote,
+) =>
+  modifyData<NewNote, Note>({
+    route: `patients/${patientId}/appointments/${appointmentId}/notes`,
+    type: "POST",
+    params: note,
+  });
 
 const updateNote = async (
   patientId: string,
   appointmentId: string,
   noteId: string,
-  note: Note,
-): Promise<unknown> => {
-  try {
-    return await getApiData<Note, unknown>(
-      `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
-      "PUT",
-      note,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("updateNote: ", err);
-    throw err;
-  }
-};
+  note: NewNote,
+) =>
+  modifyData<NewNote, Note>({
+    route: `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
+    type: "PUT",
+    params: note,
+  });
 
 const deleteNote = async (
   patientId: string,
   appointmentId: string,
   noteId: string,
-): Promise<unknown> => {
-  try {
-    return await getApiData<undefined, unknown>(
-      `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
-      "DELETE",
-      undefined,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("deleteNote: ", err);
-    throw err;
-  }
-};
+) =>
+  modifyData<undefined, unknown>({
+    route: `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
+    type: "DELETE",
+  });
 
-export { getNotes, getNote, createNote, updateNote, deleteNote };
+export { useGetNotes, useGetNote, createNote, updateNote, deleteNote };

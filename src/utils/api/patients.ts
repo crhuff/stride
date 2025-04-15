@@ -1,69 +1,34 @@
-import { getApiData } from "../fetcher/fetcher";
-import { Patient } from "./patients.type";
+import { modifyData, useFetchData } from "../fetcher/fetcher";
+import { NewPatient, Patient } from "./patients.type";
 
-const getPatients = async (): Promise<Patient[]> => {
-  try {
-    return await getApiData<undefined, Patient[]>("patients", "GET", undefined);
-  } catch (err) {
-    // replace with logger in the future
-    console.log("getPatients: ", err);
-    throw err;
-  }
+const useGetPatients = () => useFetchData<Patient[]>({ route: "patients" });
+
+const useGetPatient = (patientId: string) =>
+  useFetchData<Patient>({ route: `patients/${patientId}` });
+
+const createPatient = async (patient: NewPatient) =>
+  modifyData<NewPatient, Patient>({
+    route: "patients",
+    type: "POST",
+    params: patient,
+  });
+const updatePatient = async (patientId: string, patient: NewPatient) =>
+  modifyData<NewPatient, Patient>({
+    route: `patients/${patientId}`,
+    type: "PUT",
+    params: patient,
+  });
+
+const deletePatient = async (patientId: string) =>
+  modifyData<undefined, unknown>({
+    route: `patients/${patientId}`,
+    type: "DELETE",
+  });
+
+export {
+  useGetPatients,
+  useGetPatient,
+  createPatient,
+  updatePatient,
+  deletePatient,
 };
-
-const getPatient = async (patientId: string): Promise<Patient> => {
-  try {
-    return await getApiData<undefined, Patient>(
-      `patients/${patientId}`,
-      "GET",
-      undefined,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("getPatient: ", err);
-    throw err;
-  }
-};
-
-const createPatient = async (patient: Patient): Promise<unknown> => {
-  try {
-    return await getApiData<Patient, unknown>("patients", "POST", patient);
-  } catch (err) {
-    // replace with logger in the future
-    console.log("createPatient: ", err);
-    throw err;
-  }
-};
-
-const updatePatient = async (
-  patientId: string,
-  patient: Patient,
-): Promise<unknown> => {
-  try {
-    return await getApiData<Patient, unknown>(
-      `patients/${patientId}`,
-      "PUT",
-      patient,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("updatePatient: ", err);
-    throw err;
-  }
-};
-
-const deletePatient = async (patientId: string): Promise<unknown> => {
-  try {
-    return await getApiData<undefined, unknown>(
-      `patients/${patientId}`,
-      "DELETE",
-      undefined,
-    );
-  } catch (err) {
-    // replace with logger in the future
-    console.log("deletePatient: ", err);
-    throw err;
-  }
-};
-
-export { getPatients, getPatient, createPatient, updatePatient, deletePatient };
