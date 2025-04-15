@@ -5,15 +5,15 @@ export type Column<T> = Omit<
   GridColDef,
   "key" | "title" | "isDate" | "field" | "headerName"
 > & {
-  key: keyof T; // Ensures the key matches a property in the data object
+  key: keyof T;
   title: string;
   isDate?: boolean;
 };
 
 type TableProps<T> = Omit<DataGridProps, "columns" | "pageSize"> & {
-  data: Array<T & { id?: string | number }>; // Array of data objects
-  columns: Array<Column<T>>; // Array of column definitions
-  pageSize?: number; // Optional: Number of rows per page
+  data: Array<T & { id?: string | number }>;
+  columns: Array<Column<T>>;
+  pageSize?: number;
 };
 
 const BuiltTable = <T,>({
@@ -27,7 +27,7 @@ const BuiltTable = <T,>({
     ...column,
     field: String(column.key),
     headerName: column.title,
-    flex: 1, // Adjust column width dynamically
+    flex: 1,
     sortable: true,
     sortComparator: column.isDate
       ? (v1, v2) => new Date(v1).getTime() - new Date(v2).getTime()

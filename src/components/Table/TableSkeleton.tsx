@@ -2,14 +2,14 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
 export type Column<T> = {
-  key: keyof T; // Ensures the key matches a property in the data object
+  key: keyof T;
   title: string;
   isDate?: boolean;
 };
 
 type TableSkeletonProps<T> = {
-  columns: Array<Column<T>>; // Array of column definitions
-  pageSize?: number; // Optional: Number of rows per page
+  columns: Array<Column<T>>;
+  pageSize?: number;
 };
 
 const TableSkeleton = <T,>({
@@ -20,7 +20,7 @@ const TableSkeleton = <T,>({
   const gridColumns: GridColDef[] = columns.map((column) => ({
     field: String(column.key),
     headerName: column.title,
-    flex: 1, // Adjust column width dynamically
+    flex: 1,
     sortable: true,
     sortComparator: column.isDate
       ? (v1, v2) => new Date(v1).getTime() - new Date(v2).getTime()

@@ -15,6 +15,7 @@ import {
   useGetAppointment,
 } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
+import { appointmentStatus, appointmentType } from "../../../utils/enums";
 
 interface AppointmentUpdateModalProps {
   open: boolean;
@@ -197,9 +198,11 @@ const AppointmentUpdateModal: React.FC<AppointmentUpdateModalProps> = ({
               error={!appointment.type}
               helperText={!appointment.type ? "Type is required" : ""}
             >
-              <MenuItem value="Initial Evaluation">Initial Evaluation</MenuItem>
-              <MenuItem value="Follow Up">Follow Up</MenuItem>
-              <MenuItem value="Discharge">Dischrage</MenuItem>
+              {Object.keys(appointmentType).map((key) => (
+                <MenuItem key={key} value={appointmentType[key]}>
+                  {appointmentType[key]}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               label="Appointment Status"
@@ -216,9 +219,11 @@ const AppointmentUpdateModal: React.FC<AppointmentUpdateModalProps> = ({
                   : ""
               }
             >
-              <MenuItem value="Scheduled">Scheduled</MenuItem>
-              <MenuItem value="Checked In">Checked In</MenuItem>
-              <MenuItem value="Canceled">Canceled</MenuItem>
+              {Object.keys(appointmentStatus).map((key) => (
+                <MenuItem key={key} value={appointmentStatus[key]}>
+                  {appointmentStatus[key]}
+                </MenuItem>
+              ))}
             </TextField>
             <Button onClick={onClose} color="secondary">
               Cancel

@@ -1,11 +1,9 @@
-type AppointmentType = "Initial Evaluation" | "Follow Up" | "Discharge";
-type AppointmentStatus = "Scheduled" | "Checked In" | "Canceled";
+import { AppointmentStatus, AppointmentType } from "../enums";
 
 type Appointment = {
   id: string;
   patientId: string;
   providerId: string;
-  // date: string;
   startTime: string;
   endTime: string;
   type: AppointmentType;
@@ -15,4 +13,4 @@ type Appointment = {
 
 type NewAppointment = Omit<Appointment, "id" | "createdAt" | "patientId">;
 
-export type { Appointment, NewAppointment, AppointmentType, AppointmentStatus };
+export type { Appointment, NewAppointment };

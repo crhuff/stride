@@ -20,6 +20,7 @@ import ErrorNotification from "../../../components/ErrorNotification/ErrorNotifi
 import { useNavigate } from "react-router-dom";
 import nav from "../../../utils/nav";
 import PatientCreateModal from "../../Patient/modal/PatientCreateModal";
+import { appointmentStatus, appointmentType } from "../../../utils/enums";
 
 const AppointmentCreate = () => {
   const providersResponse = useGetProviders();
@@ -32,8 +33,8 @@ const AppointmentCreate = () => {
     providerId: "",
     startTime: "",
     endTime: "",
-    status: "Scheduled",
-    type: "Initial Evaluation",
+    status: appointmentStatus.SCHEDULED,
+    type: appointmentType.INITIALEVALUATION,
   });
   const [appointmentFieldTouched, setAppointmentFieldTouched] = useState({
     patientId: false,
@@ -226,9 +227,11 @@ const AppointmentCreate = () => {
                 : ""
             }
           >
-            <MenuItem value="Initial Evaluation">Initial Evaluation</MenuItem>
-            <MenuItem value="Follow Up">Follow Up</MenuItem>
-            <MenuItem value="Discharge">Dischrage</MenuItem>
+            {Object.keys(appointmentType).map((key) => (
+              <MenuItem key={key} value={appointmentType[key]}>
+                {appointmentType[key]}
+              </MenuItem>
+            ))}
           </TextField>
           <TextField
             label="Appointment Status"
@@ -245,9 +248,11 @@ const AppointmentCreate = () => {
                 : ""
             }
           >
-            <MenuItem value="Scheduled">Scheduled</MenuItem>
-            <MenuItem value="Checked In">Checked In</MenuItem>
-            <MenuItem value="Canceled">Canceled</MenuItem>
+            {Object.keys(appointmentStatus).map((key) => (
+              <MenuItem key={key} value={appointmentStatus[key]}>
+                {appointmentStatus[key]}
+              </MenuItem>
+            ))}
           </TextField>
           <Button
             onClick={handleSubmit}

@@ -14,6 +14,7 @@ import {
 } from "../../../utils/api/appointments.type";
 import { createAppointment, useGetProviders } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
+import { appointmentStatus, appointmentType } from "../../../utils/enums";
 
 interface AppointmentCreateModalProps {
   open: boolean;
@@ -32,8 +33,8 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
     providerId: "",
     startTime: "",
     endTime: "",
-    status: "Scheduled",
-    type: "Initial Evaluation",
+    status: appointmentStatus.SCHEDULED,
+    type: appointmentType.INITIALEVALUATION,
   });
   const [appointmentFieldTouched, setAppointmentFieldTouched] = useState({
     providerId: false,
@@ -59,8 +60,8 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
         providerId: "",
         startTime: "",
         endTime: "",
-        status: "Scheduled",
-        type: "Initial Evaluation",
+        status: appointmentStatus.SCHEDULED,
+        type: appointmentType.INITIALEVALUATION,
       });
       setAppointmentFieldTouched({
         providerId: false,
@@ -211,9 +212,11 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
                   : ""
               }
             >
-              <MenuItem value="Initial Evaluation">Initial Evaluation</MenuItem>
-              <MenuItem value="Follow Up">Follow Up</MenuItem>
-              <MenuItem value="Discharge">Dischrage</MenuItem>
+              {Object.keys(appointmentType).map((key) => (
+                <MenuItem key={key} value={appointmentType[key]}>
+                  {appointmentType[key]}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               label="Appointment Status"
@@ -230,9 +233,11 @@ const AppointmentCreateModal: React.FC<AppointmentCreateModalProps> = ({
                   : ""
               }
             >
-              <MenuItem value="Scheduled">Scheduled</MenuItem>
-              <MenuItem value="Checked In">Checked In</MenuItem>
-              <MenuItem value="Canceled">Canceled</MenuItem>
+              {Object.keys(appointmentStatus).map((key) => (
+                <MenuItem key={key} value={appointmentStatus[key]}>
+                  {appointmentStatus[key]}
+                </MenuItem>
+              ))}
             </TextField>
             <Button onClick={onClose} color="secondary">
               Cancel
