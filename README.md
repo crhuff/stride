@@ -1,5 +1,7 @@
 [Hosted on Vercel](https://stride-three.vercel.app/)
 
+This project is published solely for review by Stride Therapy, Inc. No license is granted for reuse, modification, or distribution of the source code.
+
 # Appointment Scheduler, Note Taker, and Patient List
 
 This project is a take-home interview assignment designed to showcase an appointment scheduler, note-taking functionality, and a patient list.
