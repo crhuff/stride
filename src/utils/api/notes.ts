@@ -1,14 +1,25 @@
-import { useFetchData, modifyData } from "../fetcher/fetcher";
+import { useFetchData, modifyData, Options } from "../fetcher/fetcher";
 import { NewNote, Note } from "./notes.type";
 
-const useGetNotes = (patientId: string, appointmentId: string) =>
+const useGetNotes = (
+  patientId: string,
+  appointmentId: string,
+  { options }: { options?: Options } = {},
+) =>
   useFetchData<Note[]>({
     route: `patients/${patientId}/appointments/${appointmentId}/notes`,
+    options,
   });
 
-const useGetNote = (patientId: string, appointmentId: string, noteId: string) =>
+const useGetNote = (
+  patientId: string,
+  appointmentId: string,
+  noteId: string,
+  { options }: { options?: Options } = {},
+) =>
   useFetchData<Note>({
     route: `patients/${patientId}/appointments/${appointmentId}/notes/${noteId}`,
+    options,
   });
 
 const createNote = async (

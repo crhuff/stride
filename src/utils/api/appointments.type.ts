@@ -5,7 +5,7 @@ type Appointment = {
   id: string;
   patientId: string;
   providerId: string;
-  date: string;
+  // date: string;
   startTime: string;
   endTime: string;
   type: AppointmentType;

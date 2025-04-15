@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
 import { useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
+import PatientAppointmentTable from "./PatientAppointmentTable";
 
 const PatientDetail = () => {
   const patientId = useParams().id as string;
@@ -36,20 +37,23 @@ const PatientDetail = () => {
     patientResponse.data;
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {firstName} {lastName}
-        </Typography>
-        <Typography color="textSecondary">
-          Date of Birth: {new Date(dateOfBirth).toLocaleDateString()}
-        </Typography>
-        <Typography color="textSecondary">Phone: {phoneNumber}</Typography>
-        <Typography color="textSecondary">
-          Created at: {new Date(createdAt).toLocaleDateString()}
-        </Typography>
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {firstName} {lastName}
+          </Typography>
+          <Typography color="textSecondary">
+            Date of Birth: {new Date(dateOfBirth).toLocaleDateString()}
+          </Typography>
+          <Typography color="textSecondary">Phone: {phoneNumber}</Typography>
+          <Typography color="textSecondary">
+            Created at: {new Date(createdAt).toLocaleDateString()}
+          </Typography>
+        </CardContent>
+      </Card>
+      <PatientAppointmentTable patientId={patientId} />
+    </>
   );
 };
 

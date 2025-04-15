@@ -27,7 +27,7 @@ const PatientTable = () => {
     }),
   );
 
-  const columns: Column<(typeof patientsFormatted)[0]>[] = [
+  const columns: Column<FormattedPatient>[] = [
     { key: "fullName", title: "Patient Name" },
     { key: "dateOfBirth", title: "Date of Birth", isDate: true },
     { key: "phoneNumber", title: "Phone Number" },

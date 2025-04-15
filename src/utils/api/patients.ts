@@ -1,10 +1,13 @@
-import { modifyData, useFetchData } from "../fetcher/fetcher";
+import { modifyData, Options, useFetchData } from "../fetcher/fetcher";
 import { NewPatient, Patient } from "./patients.type";
 
-const useGetPatients = () => useFetchData<Patient[]>({ route: "patients" });
+const useGetPatients = ({ options }: { options?: Options } = {}) =>
+  useFetchData<Patient[]>({ route: "patients", options });
 
-const useGetPatient = (patientId: string) =>
-  useFetchData<Patient>({ route: `patients/${patientId}` });
+const useGetPatient = (
+  patientId: string,
+  { options }: { options?: Options } = {},
+) => useFetchData<Patient>({ route: `patients/${patientId}`, options });
 
 const createPatient = async (patient: NewPatient) =>
   modifyData<NewPatient, Patient>({

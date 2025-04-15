@@ -46,14 +46,15 @@ const modifyData = async <Params, Result>({
 
 const cache = new Map<string, { data: unknown | null; timestamp: number }>();
 
+export type Options = {
+  fetchOnMount?: boolean;
+};
 const useFetchData = <Result>({
   route,
   options = {},
 }: {
   route: string;
-  options?: {
-    fetchOnMount?: boolean;
-  };
+  options?: Options;
 }): RetrieveResponse<Result> => {
   const [data, setData] = useState<Result | null>(null);
   const [responseMetaData, setResponseMetaData] = useState<Response>();

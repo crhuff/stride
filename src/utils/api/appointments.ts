@@ -1,14 +1,23 @@
-import { useFetchData, modifyData } from "../fetcher/fetcher";
+import { useFetchData, modifyData, Options } from "../fetcher/fetcher";
 import { Appointment, NewAppointment } from "./appointments.type";
 
-const useGetAppointments = (patientId: string) =>
+const useGetAppointments = (
+  patientId: string,
+  { options }: { options?: Options } = {},
+) =>
   useFetchData<Appointment[]>({
     route: `patients/${patientId}/appointments`,
+    options,
   });
 
-const useGetAppointment = (patientId: string, appointmentId: string) =>
+const useGetAppointment = (
+  patientId: string,
+  appointmentId: string,
+  { options }: { options?: Options } = {},
+) =>
   useFetchData<Appointment[]>({
     route: `patients/${patientId}/appointments/${appointmentId}`,
+    options,
   });
 
 const createAppointment = async (
