@@ -6,6 +6,7 @@ type RetrieveResponse<T> = {
   error: Error | null;
   loading: boolean;
   refetch: () => void;
+  status?: number;
 };
 type ModifyResponse<T> = {
   data: T | null;
@@ -47,10 +48,15 @@ const cache = new Map<string, { data: unknown | null; timestamp: number }>();
 
 const useFetchData = <Result>({
   route,
+  options = {},
 }: {
   route: string;
+  options?: {
+    fetchOnMount?: boolean;
+  };
 }): RetrieveResponse<Result> => {
   const [data, setData] = useState<Result | null>(null);
+  const [responseMetaData, setResponseMetaData] = useState<Response>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [forceRefetch, setForceRefetch] = useState(false);
@@ -74,7 +80,8 @@ const useFetchData = <Result>({
       if (
         cachedResponse &&
         now - cachedResponse.timestamp < 60000 &&
-        !forceRefetch
+        !forceRefetch &&
+        !options.fetchOnMount
       ) {
         setData(cachedResponse.data as Result);
         setLoading(false);
@@ -85,6 +92,10 @@ const useFetchData = <Result>({
         const BASE_URL =
           import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
         const response = await fetch(`${BASE_URL}/${route}`, payload);
+        setResponseMetaData(response);
+        if (!response.ok || response.status >= 400) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
         const data = await response.json();
         cache.set(cacheKey, { data, timestamp: now });
         setLoading(false);
@@ -97,11 +108,11 @@ const useFetchData = <Result>({
       }
     };
     fetchData();
-  }, [payload, route, forceRefetch]);
+  }, [payload, route, forceRefetch, options.fetchOnMount]);
 
   const refetch = () => setForceRefetch(true);
 
-  return { data, error, loading, refetch };
+  return { data, error, loading, refetch, status: responseMetaData?.status };
 };
 
 export { useFetchData, modifyData };
