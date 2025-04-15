@@ -1,0 +1,38 @@
+import React, { createContext, useContext, useState, ReactNode } from "react";
+
+interface HeaderContextProps {
+  backButtonVisible: boolean;
+  headerText: string;
+  setBackButtonVisible: (visible: boolean) => void;
+  setHeaderText: (text: string) => void;
+}
+
+const HeaderContext = createContext<HeaderContextProps | undefined>(undefined);
+
+export const HeaderProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [backButtonVisible, setBackButtonVisible] = useState(false);
+  const [headerText, setHeaderText] = useState("");
+
+  return (
+    <HeaderContext.Provider
+      value={{
+        backButtonVisible,
+        headerText,
+        setBackButtonVisible,
+        setHeaderText,
+      }}
+    >
+      {children}
+    </HeaderContext.Provider>
+  );
+};
+
+export const useHeader = (): HeaderContextProps => {
+  const context = useContext(HeaderContext);
+  if (!context) {
+    throw new Error("useHeader must be used within a HeaderProvider");
+  }
+  return context;
+};

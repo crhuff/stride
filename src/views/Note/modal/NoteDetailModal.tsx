@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Modal, Typography } from "@mui/material";
-import { useGetNote } from "../../utils";
-import ErrorNotification from "../../components/ErrorNotification/ErrorNotification";
-import { Note } from "../../utils/api/notes.type";
+import { useGetNote } from "../../../utils";
+import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
+import { Note } from "../../../utils/api/notes.type";
 
 const NoteDetailModal = ({
   open,

@@ -8,7 +8,7 @@ import {
 import ErrorNotification from "../../components/ErrorNotification/ErrorNotification";
 import NoteTable from "../Note/NoteTable";
 import { useState } from "react";
-import NoteCreateModal from "../Note/NoteCreateModal";
+import NoteCreateModal from "../Note/modal/NoteCreateModal";
 
 const AppointmentDetail = () => {
   const patientId = useParams().id as string;

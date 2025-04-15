@@ -5,8 +5,8 @@ import BuiltTable, { Column } from "../../components/Table/Table";
 import { deleteNote, useGetNotes } from "../../utils";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import ActionsColumn, { Action } from "../../components/Table/ActionsColumn";
-import NoteUpdateModal from "./NoteUpdateModal";
-import NoteDetailModal from "./NoteDetailModal";
+import NoteUpdateModal from "./modal/NoteUpdateModal";
+import NoteDetailModal from "./modal/NoteDetailModal";
 import { Note } from "../../utils/api/notes.type";
 
 type FormattedNote = {

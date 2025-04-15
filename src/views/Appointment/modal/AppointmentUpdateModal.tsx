@@ -8,13 +8,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Appointment } from "../../utils/api/appointments.type";
+import { Appointment } from "../../../utils/api/appointments.type";
 import {
   updateAppointment,
   useGetProviders,
   useGetAppointment,
-} from "../../utils";
-import ErrorNotification from "../../components/ErrorNotification/ErrorNotification";
+} from "../../../utils";
+import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 
 interface AppointmentUpdateModalProps {
   open: boolean;

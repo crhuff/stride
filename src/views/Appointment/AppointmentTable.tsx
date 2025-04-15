@@ -14,7 +14,7 @@ import {
 } from "../../utils/api/appointments.type";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import ActionsColumn, { Action } from "../../components/Table/ActionsColumn";
-import AppointmentUpdateModal from "./AppointmentUpdateModal";
+import AppointmentUpdateModal from "./modal/AppointmentUpdateModal";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
 

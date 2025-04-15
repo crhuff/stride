@@ -8,12 +8,16 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Welcome to the Clinic
-        </Typography>
         <Button color="inherit" onClick={() => navigate(nav.toHome())}>
           Home
         </Button>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, marginLeft: "1rem" }}
+        >
+          Welcome to the Clinic
+        </Typography>
       </Toolbar>
     </AppBar>
   );

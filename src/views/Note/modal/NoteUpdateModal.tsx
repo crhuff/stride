@@ -7,53 +7,47 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { createNote } from "../../utils";
-import { NewNote, Note } from "../../utils/api/notes.type";
+import { updateNote, useGetNote } from "../../../utils";
+import { Note } from "../../../utils/api/notes.type";
+import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 
-interface NoteCreateModalProps {
+interface NoteUpdateModalProps {
   open: boolean;
   onClose: () => void;
   patientId: string;
   appointmentId: string;
+  noteId: string;
   onDone?: (appointmentId: string) => void;
 }
 
-const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
+const NoteUpdateModal: React.FC<NoteUpdateModalProps> = ({
   open,
   onClose,
   onDone,
   patientId,
+  noteId,
   appointmentId,
 }) => {
-  const [newNote, setNewNote] = useState<NewNote>({
-    chiefComplaint: "",
-    treatmentPlan: "",
-    progress: "",
+  const noteResponse = useGetNote(patientId, appointmentId, noteId, {
+    options: { fetchOnMount: true },
   });
-  const [noteFieldTouched, setNoteFieldTouched] = useState({
-    chiefComplaint: false,
-    treatmentPlan: false,
-    progress: false,
-  });
+  const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<false | Note>(false);
 
-  const appointmentValid =
-    newNote.chiefComplaint && newNote.treatmentPlan && newNote.progress;
+  useEffect(() => {
+    if (noteResponse.data) {
+      setNote(noteResponse.data);
+    }
+  }, [noteResponse.data]);
+
+  const noteValid =
+    note?.chiefComplaint && note?.progress && note?.treatmentPlan;
 
   useEffect(() => {
     if (!open) {
-      setNewNote({
-        chiefComplaint: "",
-        treatmentPlan: "",
-        progress: "",
-      });
-      setNoteFieldTouched({
-        chiefComplaint: false,
-        treatmentPlan: false,
-        progress: false,
-      });
+      setNote(null);
       setLoading(false);
       setError(null);
       setSuccess(false);
@@ -62,25 +56,50 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNewNote((prev) => ({ ...prev, [name]: value }));
-    setNoteFieldTouched((prev) => ({
-      ...prev,
-      [name]: true,
-    }));
+    setNote((prev) => (prev ? { ...prev, [name]: value } : prev));
   };
 
   const handleSubmit = async () => {
+    if (!note) return;
     setLoading(true);
     try {
-      const result = await createNote(patientId, appointmentId, newNote);
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        id: _id,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        createdAt: _createdAt,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        appointmentId: _appointmentId,
+        ...newNote
+      } = note;
+      const result = await updateNote(
+        patientId,
+        appointmentId,
+        noteId,
+        newNote,
+      );
       if (result.data) setSuccess(result.data);
       if (result.error) throw result.error;
     } catch (err) {
-      setError("Failed to create note: " + (err as Error).message);
+      setError("Failed to update note: " + (err as Error).message);
     }
     setLoading(false);
   };
 
+  if (noteResponse.error) {
+    return (
+      <Modal open={open} onClose={onClose}>
+        <ErrorNotification error={noteResponse.error} />
+      </Modal>
+    );
+  }
+  if (noteResponse.loading || !note) {
+    return (
+      <Modal open={open} onClose={onClose}>
+        <div>Loading...</div>
+      </Modal>
+    );
+  }
   return (
     <Modal
       open={open}
@@ -100,7 +119,7 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
         }}
       >
         <Typography variant="h6" mb={2}>
-          Create note
+          Update note
         </Typography>
         {error && (
           <Typography color="error" mb={2}>
@@ -109,7 +128,7 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
         )}
         {success && (
           <Typography color="success" mb={2}>
-            Note created successfully!
+            Note updated successfully!
           </Typography>
         )}
         {!success && !error && (
@@ -117,12 +136,10 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
             <TextField
               label="Chief complaint"
               name="chiefComplaint"
-              value={newNote.chiefComplaint}
-              error={!newNote.chiefComplaint && noteFieldTouched.chiefComplaint}
+              value={note.chiefComplaint}
+              error={!note.chiefComplaint}
               helperText={
-                !newNote.chiefComplaint && noteFieldTouched.chiefComplaint
-                  ? "Chief complaint is required"
-                  : ""
+                !note.chiefComplaint ? "Chief complaint is required" : ""
               }
               onChange={handleInputChange}
               fullWidth
@@ -130,12 +147,10 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
             <TextField
               label="Treatment plan"
               name="treatmentPlan"
-              value={newNote.treatmentPlan}
-              error={!newNote.treatmentPlan && noteFieldTouched.treatmentPlan}
+              value={note.treatmentPlan}
+              error={!note.treatmentPlan}
               helperText={
-                !newNote.treatmentPlan && noteFieldTouched.treatmentPlan
-                  ? "Treatment plan is required"
-                  : ""
+                !note.treatmentPlan ? "Treatment plan is required" : ""
               }
               onChange={handleInputChange}
               fullWidth
@@ -143,13 +158,9 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
             <TextField
               label="Progress"
               name="progress"
-              value={newNote.progress}
-              error={!newNote.progress && noteFieldTouched.progress}
-              helperText={
-                !newNote.progress && noteFieldTouched.progress
-                  ? "Progress is required"
-                  : ""
-              }
+              value={note.progress}
+              error={!note.progress}
+              helperText={!note.progress ? "Progress is required" : ""}
               onChange={handleInputChange}
               fullWidth
             />
@@ -158,11 +169,11 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
             </Button>
             <Button
               onClick={handleSubmit}
-              disabled={!appointmentValid || loading}
+              disabled={!noteValid || loading}
               color="primary"
               variant="contained"
             >
-              Create
+              Update
             </Button>
           </Stack>
         )}
@@ -171,4 +182,4 @@ const NoteCreateModal: React.FC<NoteCreateModalProps> = ({
   );
 };
 
-export default NoteCreateModal;
+export default NoteUpdateModal;
