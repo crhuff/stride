@@ -1,16 +1,19 @@
-import { useGetPatients } from "../../utils";
+import { deletePatient, useGetPatients } from "../../utils";
 import TableSkeleton from "../../components/Table/TableSkeleton";
 import ErrorNotification from "../../components/ErrorNotification/ErrorNotification";
 import { Patient } from "../../utils/api/patients.type";
 import BuiltTable, { Column } from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
+import { GridRenderCellParams } from "@mui/x-data-grid";
+import ActionsColumn, { Action } from "../../components/Table/ActionsColumn";
 
 type FormattedPatient = {
   id: string;
   fullName: string;
   dateOfBirth: string;
   phoneNumber: string;
+  actions?: string;
 };
 
 const PatientTable = () => {
@@ -27,10 +30,32 @@ const PatientTable = () => {
     }),
   );
 
+  const handleDelete = async (id: string) => {
+    // Logic to delete the note
+    console.log(`Delete note with id: ${id}`);
+    try {
+      await deletePatient(id);
+      patientsResponse.refetch();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const columns: Column<FormattedPatient>[] = [
     { key: "fullName", title: "Patient Name" },
     { key: "dateOfBirth", title: "Date of Birth", isDate: true },
     { key: "phoneNumber", title: "Phone Number" },
+    {
+      key: "actions",
+      title: "Actions",
+      renderCell: (params: GridRenderCellParams<FormattedPatient, Date>) => {
+        const actions: Action[] = [
+          { id: "delete", text: "Delete", onClick: handleDelete },
+        ];
+
+        return <ActionsColumn rowId={params.row.id} actions={actions} />;
+      },
+    },
   ];
 
   if (patientsResponse.loading) {

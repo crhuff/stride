@@ -16,6 +16,7 @@ const ActionsColumn: React.FC<ActionsColumnProps> = ({ rowId, actions }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -28,7 +29,7 @@ const ActionsColumn: React.FC<ActionsColumnProps> = ({ rowId, actions }) => {
       <Button
         variant="contained"
         size="small"
-        style={{ marginLeft: 16 }}
+        style={{ marginLeft: 16, zIndex: 1 }}
         onClick={handleClick}
       >
         Actions
