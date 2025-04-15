@@ -1,3 +1,5 @@
+[Hosted on Vercel](https://stride-three.vercel.app/)
+
 # Appointment Scheduler, Note Taker, and Patient List
 
 This project is a take-home interview assignment designed to showcase an appointment scheduler, note-taking functionality, and a patient list.
