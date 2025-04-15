@@ -136,6 +136,14 @@ const AppointmentTable = ({
         onRowClick={({ row }: { row: FormattedAppointment }) => {
           navigate(nav.toAppointmentDetail(patientId, row.id));
         }}
+        sx={{
+          "& .MuiDataGrid-row": {
+            cursor: "pointer",
+          },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: "rgba(0, 0, 0, .15)",
+          },
+        }}
       />
       <AppointmentUpdateModal
         open={!!editModalId}

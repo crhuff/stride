@@ -18,3 +18,8 @@ body {
   justify-content: flex-start;
   color: #4a4a4a; // Neutral dark gray for text
 }
+
+.MuiDataGrid-row {
+  cursor: pointer;
+}
+

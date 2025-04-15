@@ -73,6 +73,14 @@ const PatientTable = () => {
       onRowClick={({ row }: { row: FormattedPatient }) => {
         navigate(nav.toPatientDetail(row.id));
       }}
+      sx={{
+        "& .MuiDataGrid-row": {
+          cursor: "pointer",
+        },
+        "& .MuiDataGrid-row:hover": {
+          backgroundColor: "rgba(0, 0, 0, .15)",
+        },
+      }}
     />
   );
 };

@@ -106,6 +106,14 @@ const NoteTable = ({
         onRowClick={({ row }: { row: FormattedNote }) => {
           setViewModalId(row.id);
         }}
+        sx={{
+          "& .MuiDataGrid-row": {
+            cursor: "pointer",
+          },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: "rgba(0, 0, 0, .15)",
+          },
+        }}
       />
       <NoteUpdateModal
         open={!!editModalId}
