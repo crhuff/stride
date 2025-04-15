@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import {
   useGetAppointment,
-  useGetNotes,
   useGetPatients,
   useGetProviders,
 } from "../../utils";
@@ -10,25 +9,19 @@ import ErrorNotification from "../../components/ErrorNotification/ErrorNotificat
 import NoteTable from "../Note/NoteTable";
 import { useState } from "react";
 import NoteCreateModal from "../Note/NoteCreateModal";
-import NoteEditModal from "../Note/NoteUpdateModal";
-import NoteDetailModal from "../Note/NoteDetailModal";
 
 const AppointmentDetail = () => {
   const patientId = useParams().id as string;
   const appointmentId = useParams().appointmentId as string;
   const appointmentResponse = useGetAppointment(patientId, appointmentId);
   const patientsResponse = useGetPatients();
-  const notesResponse = useGetNotes(patientId, appointmentId);
   const providersResponse = useGetProviders();
 
   const [createNoteModalOpen, setCreateNoteModalOpen] = useState(false);
-  const [editNoteModalOpen, setEditNoteModalOpen] = useState(false);
-  const [noteDetailModalOpen, setNoteDetailModalOpen] = useState(false);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   if (
     appointmentResponse.error ||
-    notesResponse.error ||
     providersResponse.error ||
     patientsResponse.error
   ) {
@@ -36,7 +29,6 @@ const AppointmentDetail = () => {
       <ErrorNotification
         error={
           (appointmentResponse.error ||
-            notesResponse.error ||
             providersResponse.error ||
             patientsResponse.error) as Error
         }
@@ -45,7 +37,6 @@ const AppointmentDetail = () => {
   }
   if (
     appointmentResponse.loading ||
-    notesResponse.loading ||
     providersResponse.loading ||
     patientsResponse.loading
   ) {
@@ -126,7 +117,7 @@ const AppointmentDetail = () => {
       >
         Create new Note
       </Button>
-      {/* <NoteTable
+      <NoteTable
         patientId={patientId}
         appointmentId={appointmentId}
         refetchTrigger={refetchTrigger}
@@ -141,25 +132,6 @@ const AppointmentDetail = () => {
         patientId={patientId}
         appointmentId={appointmentId}
       />
-      <NoteEditModal
-        open={editNoteModalOpen}
-        onClose={() => setEditNoteModalOpen(false)}
-        onDone={() => {
-          setRefetchTrigger((prev) => prev + 1); // Update refetchTrigger
-          setEditNoteModalOpen(false);
-        }}
-        patientId={patientId}
-        appointmentId={appointmentId}
-      />
-      <NoteDetailModal
-        open={noteDetailModalOpen}
-        onClose={() => setNoteDetailModalOpen(false)}
-        onDone={() => {
-          setNoteDetailModalOpen(false);
-        }}
-        patientId={patientId}
-        appointmentId={appointmentId}
-      /> */}
     </>
   );
 };

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import { useGetAppointments, useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
-import PatientAppointmentTable from "./PatientAppointmentTable";
+import AppointmentTable from "../../Appointment/AppointmentTable";
 import { useState } from "react";
 import AppointmentCreateModal from "../../Appointment/create/AppointmentCreateModal";
 
@@ -65,10 +65,7 @@ const PatientDetail = () => {
       >
         Create new Appointment
       </Button>
-      <PatientAppointmentTable
-        patientId={patientId}
-        refetchTrigger={refetchTrigger}
-      />
+      <AppointmentTable patientId={patientId} refetchTrigger={refetchTrigger} />
       <AppointmentCreateModal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
