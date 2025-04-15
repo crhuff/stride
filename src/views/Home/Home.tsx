@@ -17,12 +17,6 @@ const Home = () => {
         >
           Create Appointment
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate(nav.toAppointments())}
-        >
-          View Appointments
-        </Button>
       </Stack>
     </Container>
   );
