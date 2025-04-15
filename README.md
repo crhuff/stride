@@ -1,54 +1,42 @@
-# React + TypeScript + Vite
+# Appointment Scheduler, Note Taker, and Patient List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a take-home interview assignment designed to showcase an appointment scheduler, note-taking functionality, and a patient list.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project leverages the following technologies and tools:
 
-## Expanding the ESLint configuration
+- **React**
+- **TypeScript**
+- **SCSS**
+- **Material UI**
+- **Context API**: For global state management.
+- **API Caching**: To optimize performance and reduce redundant API calls and avoid burdensome state management.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Environment Setup
+To configure the project, create a `.env` file at the `src` level with the following variable:
+
+```
+VITE_API_BASE_URL=<your_api_base_url>
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+If `VITE_API_BASE_URL` is not provided, the application will default to using `http://localhost:3000`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation and Running the Project
+1. Install dependencies:
+  ```bash
+  npm i
+  ```
+2. Start the development server:
+  ```bash
+  npm run dev
+  ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+The application will be available at the URL provided by the development server.
+
+## Features
+- **Appointment Scheduler**: Manage and schedule appointments for patietns.
+- **Note Taker**: Add, edit, and delete notes tied to appointments.
+- **Patient List**: View and manage a list of patients.

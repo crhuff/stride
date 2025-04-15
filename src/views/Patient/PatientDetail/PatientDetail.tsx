@@ -4,7 +4,7 @@ import { useGetAppointments, useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import AppointmentTable from "../../Appointment/AppointmentTable";
 import { useEffect, useState } from "react";
-import AppointmentCreateModal from "../../Appointment/create/AppointmentCreateModal";
+import AppointmentCreateModal from "../../Appointment/modal/AppointmentCreateModal";
 import { useHeader } from "../../../utils/header/useHeader";
 
 const PatientDetail = () => {
@@ -91,7 +91,7 @@ const PatientDetail = () => {
         onClose={() => setModalOpen(false)}
         onDone={() => {
           appointmentsResponse.refetch();
-          setRefetchTrigger((prev) => prev + 1); // Update refetchTrigger
+          setRefetchTrigger((prev) => prev + 1);
           setModalOpen(false);
         }}
         patientId={patientId}

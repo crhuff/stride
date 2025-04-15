@@ -1,6 +1,7 @@
-import { APITypes } from "./types";
 import { useEffect, useMemo, useState } from "react";
 import { useCache } from "./useCache";
+
+export type APITypes = "GET" | "POST" | "PUT" | "DELETE";
 
 type RetrieveResponse<T> = {
   data: T | null;

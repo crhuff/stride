@@ -24,7 +24,7 @@ type FormattedAppointment = {
   type: AppointmentType;
   status: AppointmentStatus;
   createdAt: string;
-  actions?: string; // Add an optional 'actions' property
+  actions?: string;
 };
 
 const AppointmentTable = ({
@@ -40,13 +40,11 @@ const AppointmentTable = ({
   const [editModalId, setEditModalId] = useState<string | null>(null);
 
   useEffect(() => {
-    appointmentsResponse.refetch(); // Re-fetch appointments when refetchTrigger changes
+    appointmentsResponse.refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetchTrigger]);
 
   const handleDelete = async (id: string) => {
-    // Logic to delete the appointment
-    console.log(`Delete appointment with id: ${id}`);
     try {
       await deleteAppointment(patientId, id);
       appointmentsResponse.refetch();
@@ -56,17 +54,16 @@ const AppointmentTable = ({
   };
 
   const handleEdit = (id: string) => {
-    // Logic to edit the appointment
     setEditModalId(id);
   };
 
   const columns: Column<FormattedAppointment>[] = [
-    { key: "provider", title: "Provider" },
+    { key: "status", title: "Status" },
     { key: "date", title: "Date", isDate: true },
     { key: "startTime", title: "Start time" },
     { key: "endTime", title: "End time" },
+    { key: "provider", title: "Provider" },
     { key: "type", title: "Type" },
-    { key: "status", title: "Status" },
     { key: "createdAt", title: "Created at", isDate: true },
     {
       key: "actions",

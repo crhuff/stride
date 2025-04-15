@@ -15,7 +15,7 @@ type FormattedNote = {
   chiefComplaint: string;
   treatmentPlan: string;
   progress: string;
-  actions?: string; // Add an optional 'actions' property
+  actions?: string;
 };
 
 const NoteTable = ({
@@ -37,7 +37,6 @@ const NoteTable = ({
   }, [refetchTrigger]);
 
   const handleDelete = async (id: string) => {
-    // Logic to delete the note
     console.log(`Delete note with id: ${id}`);
     try {
       await deleteNote(patientId, appointmentId, id);
@@ -48,13 +47,12 @@ const NoteTable = ({
   };
 
   const handleEdit = (id: string) => {
-    // Logic to edit the appointment
     setEditModalId(id);
   };
 
   const columns: Column<FormattedNote>[] = [
-    { key: "progress", title: "Progress" },
     { key: "chiefComplaint", title: "Chief complaint" },
+    { key: "progress", title: "Progress" },
     { key: "treatmentPlan", title: "Treatment plan" },
     { key: "createdAt", title: "Created at", isDate: true },
     {

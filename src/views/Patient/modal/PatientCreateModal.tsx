@@ -41,7 +41,7 @@ const PatientCreateModal = ({
     newPatient.firstName &&
     newPatient.lastName &&
     newPatient.dateOfBirth &&
-    new Date(newPatient.dateOfBirth) > new Date() &&
+    new Date(newPatient.dateOfBirth) < new Date() &&
     newPatient.phoneNumber;
 
   useEffect(() => {
@@ -155,6 +155,7 @@ const PatientCreateModal = ({
                 (new Date(newPatient.dateOfBirth) > new Date() &&
                   patientFieldTouched.dateOfBirth)
               }
+              slotProps={{ inputLabel: { shrink: true } }}
               helperText={
                 !newPatient.dateOfBirth && patientFieldTouched.dateOfBirth
                   ? "Date of birth is required"

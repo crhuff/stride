@@ -31,8 +31,6 @@ const PatientTable = () => {
   );
 
   const handleDelete = async (id: string) => {
-    // Logic to delete the note
-    console.log(`Delete note with id: ${id}`);
     try {
       await deletePatient(id);
       patientsResponse.refetch();
