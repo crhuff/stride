@@ -1,10 +1,15 @@
 import { APITypes } from "./types";
 import { useEffect, useMemo, useState } from "react";
 
-type Response<T> = {
+type RetrieveResponse<T> = {
   data: T | null;
   error: Error | null;
-  loading?: boolean;
+  loading: boolean;
+  refetch: () => void;
+};
+type ModifyResponse<T> = {
+  data: T | null;
+  error: Error | null;
 };
 
 const modifyData = async <Params, Result>({
@@ -15,7 +20,7 @@ const modifyData = async <Params, Result>({
   route: string;
   type?: APITypes;
   params?: Params;
-}): Promise<Response<Result>> => {
+}): Promise<ModifyResponse<Result>> => {
   // Build default payload
   const payload = {
     method: type,
@@ -38,14 +43,17 @@ const modifyData = async <Params, Result>({
   return { error, data };
 };
 
+const cache = new Map<string, { data: unknown | null; timestamp: number }>();
+
 const useFetchData = <Result>({
   route,
 }: {
   route: string;
-}): Response<Result> => {
+}): RetrieveResponse<Result> => {
   const [data, setData] = useState<Result | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [forceRefetch, setForceRefetch] = useState(false);
   // Build default payload
   const payload = useMemo(
     () =>
@@ -59,23 +67,41 @@ const useFetchData = <Result>({
   );
   useEffect(() => {
     const fetchData = async () => {
+      const cacheKey = route;
+      const cachedResponse = cache.get(cacheKey);
+      const now = Date.now();
+
+      if (
+        cachedResponse &&
+        now - cachedResponse.timestamp < 60000 &&
+        !forceRefetch
+      ) {
+        setData(cachedResponse.data as Result);
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       try {
         const BASE_URL =
           import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
         const response = await fetch(`${BASE_URL}/${route}`, payload);
         const data = await response.json();
+        cache.set(cacheKey, { data, timestamp: now });
         setLoading(false);
         setData(data);
       } catch (err) {
         setLoading(false);
         setError(err as Error);
+      } finally {
+        setForceRefetch(false);
       }
     };
     fetchData();
-  }, [payload, route]);
+  }, [payload, route, forceRefetch]);
 
-  return { data, error, loading };
+  const refetch = () => setForceRefetch(true);
+
+  return { data, error, loading, refetch };
 };
 
 export { useFetchData, modifyData };

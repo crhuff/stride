@@ -4,9 +4,11 @@ import { Box, Typography, Button } from "@mui/material";
 import PatientCreateModal from "./PatientCreateModal";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
+import { useGetPatients } from "../../utils";
 
 const Patients = () => {
   const navigate = useNavigate();
+  const { refetch } = useGetPatients();
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
@@ -31,6 +33,7 @@ const Patients = () => {
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
         onDone={(patientId: string) => {
+          refetch();
           navigate(nav.toPatientDetail(patientId));
         }}
       />
