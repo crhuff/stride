@@ -15,6 +15,8 @@ import {
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import ActionsColumn, { Action } from "../../../components/Table/ActionsColumn";
 import AppointmentUpdateModal from "../../Appointment/AppointmentUpdateModal";
+import { useNavigate } from "react-router-dom";
+import nav from "../../../utils/nav";
 
 type FormattedAppointment = {
   id: string;
@@ -35,6 +37,7 @@ const PatientAppointmentTable = ({
   patientId: string;
   refetchTrigger: number;
 }) => {
+  const navigate = useNavigate();
   const appointmentsResponse = useGetAppointments(patientId);
   const providersResponse = useGetProviders();
   const [editModalId, setEditModalId] = useState<string | null>(null);
@@ -127,7 +130,13 @@ const PatientAppointmentTable = ({
 
   return (
     <>
-      <BuiltTable data={appointmentsFormatted} columns={columns} />
+      <BuiltTable
+        data={appointmentsFormatted}
+        columns={columns}
+        onRowClick={({ row }: { row: FormattedAppointment }) => {
+          navigate(nav.toAppointmentDetail(patientId, row.id));
+        }}
+      />
       <AppointmentUpdateModal
         open={!!editModalId}
         onClose={() => setEditModalId(null)}
