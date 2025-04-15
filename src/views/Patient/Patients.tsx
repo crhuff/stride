@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PatientTable from "./PatientTable";
 import { Box, Typography, Button } from "@mui/material";
 import PatientCreateModal from "./modal/PatientCreateModal";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
 import { useGetPatients } from "../../utils";
+import { useHeader } from "../../utils/header/useHeader";
 
 const Patients = () => {
+  const { setBackButtonVisible } = useHeader();
+
+  useEffect(() => {
+    setBackButtonVisible(true);
+  }, [setBackButtonVisible]);
+
   const navigate = useNavigate();
   const { refetch } = useGetPatients();
   const [isModalOpen, setModalOpen] = useState(false);

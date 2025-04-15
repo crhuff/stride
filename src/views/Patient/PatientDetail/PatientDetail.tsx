@@ -3,16 +3,23 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { useGetAppointments, useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import AppointmentTable from "../../Appointment/AppointmentTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppointmentCreateModal from "../../Appointment/create/AppointmentCreateModal";
+import { useHeader } from "../../../utils/header/useHeader";
 
 const PatientDetail = () => {
+  const { setBackButtonVisible } = useHeader();
+
   const patientId = useParams().id as string;
   const patientResponse = useGetPatient(patientId);
   const appointmentsResponse = useGetAppointments(patientId);
   const isLoading = patientResponse.loading;
   const [isModalOpen, setModalOpen] = useState(false);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  useEffect(() => {
+    setBackButtonVisible(true);
+  }, [setBackButtonVisible]);
 
   if (isLoading) {
     return (

@@ -7,10 +7,13 @@ import {
 } from "../../utils";
 import ErrorNotification from "../../components/ErrorNotification/ErrorNotification";
 import NoteTable from "../Note/NoteTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoteCreateModal from "../Note/modal/NoteCreateModal";
+import { useHeader } from "../../utils/header/useHeader";
 
 const AppointmentDetail = () => {
+  const { setBackButtonVisible } = useHeader();
+
   const patientId = useParams().id as string;
   const appointmentId = useParams().appointmentId as string;
   const appointmentResponse = useGetAppointment(patientId, appointmentId);
@@ -19,6 +22,10 @@ const AppointmentDetail = () => {
 
   const [createNoteModalOpen, setCreateNoteModalOpen] = useState(false);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  useEffect(() => {
+    setBackButtonVisible(true);
+  }, [setBackButtonVisible]);
 
   if (
     appointmentResponse.error ||

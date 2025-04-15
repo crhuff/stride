@@ -1,8 +1,16 @@
 import { Button, Container, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
+import { useHeader } from "../../utils/header/useHeader";
+import { useEffect } from "react";
 
 const Home = () => {
+  const { setBackButtonVisible } = useHeader();
+
+  useEffect(() => {
+    setBackButtonVisible(false);
+  }, [setBackButtonVisible]);
+
   const navigate = useNavigate();
 
   return (
