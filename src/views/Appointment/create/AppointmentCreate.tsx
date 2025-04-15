@@ -19,7 +19,7 @@ import {
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import { useNavigate } from "react-router-dom";
 import nav from "../../../utils/nav";
-import PatientCreateModal from "../../Patient/PatientCreateModal";
+import PatientCreateModal from "../../Patient/modal/PatientCreateModal";
 
 const AppointmentCreate = () => {
   const providersResponse = useGetProviders();

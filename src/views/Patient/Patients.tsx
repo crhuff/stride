@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PatientTable from "./PatientTable";
 import { Box, Typography, Button } from "@mui/material";
-import PatientCreateModal from "./PatientCreateModal";
+import PatientCreateModal from "./modal/PatientCreateModal";
 import { useNavigate } from "react-router-dom";
 import nav from "../../utils/nav";
 import { useGetPatients } from "../../utils";

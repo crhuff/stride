@@ -6,8 +6,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { createPatient } from "../../utils";
-import { NewPatient, Patient } from "../../utils/api/patients.type";
+import { createPatient } from "../../../utils";
+import { NewPatient, Patient } from "../../../utils/api/patients.type";
 import { useEffect, useState } from "react";
 
 export type PatientCreateModalProps = {
