@@ -1,6 +1,33 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@use './Patient/Patients.scss';
+@use './Appointment/AppointmentDetail.scss';
+
+.table-container {
+  background-color: #ffffff; // White background for the table
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #e8f5e9; // Pastel green background
+  border-radius: 8px;
+
+  h4 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #4a4a4a; // Neutral dark gray
+  }
+
+  button {
+    background-color: #15873d; // Slightly darker pastel green
+    color: #ffffff;
+    font-weight: bold;
+    &:hover {
+      background-color: #81c784; // Pastel green button
+    }
+  }
 }

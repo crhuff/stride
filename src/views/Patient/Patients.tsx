@@ -12,8 +12,9 @@ const Patients = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
-    <>
+    <div id="patients-page">
       <Box
+        className="header"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -28,7 +29,9 @@ const Patients = () => {
           Add New Patient
         </Button>
       </Box>
-      <PatientTable />
+      <div className="table-container">
+        <PatientTable />
+      </div>
       <PatientCreateModal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
@@ -37,7 +40,7 @@ const Patients = () => {
           navigate(nav.toPatientDetail(patientId));
         }}
       />
-    </>
+    </div>
   );
 };
 export default Patients;

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { useGetAppointments, useGetPatient } from "../../../utils";
 import ErrorNotification from "../../../components/ErrorNotification/ErrorNotification";
 import AppointmentTable from "../../Appointment/AppointmentTable";
@@ -43,12 +43,20 @@ const PatientDetail = () => {
     patientResponse.data;
 
   return (
-    <>
+    <div id="patient-detail">
+      <Box
+        className="header"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h4">
+          {firstName} {lastName}
+        </Typography>
+      </Box>
       <Card>
         <CardContent>
-          <Typography variant="h5" component="div">
-            {firstName} {lastName}
-          </Typography>
           <Typography color="textSecondary">
             Date of Birth: {new Date(dateOfBirth).toLocaleDateString()}
           </Typography>
@@ -65,7 +73,12 @@ const PatientDetail = () => {
       >
         Create new Appointment
       </Button>
-      <AppointmentTable patientId={patientId} refetchTrigger={refetchTrigger} />
+      <div className="table-container">
+        <AppointmentTable
+          patientId={patientId}
+          refetchTrigger={refetchTrigger}
+        />
+      </div>
       <AppointmentCreateModal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
@@ -76,7 +89,7 @@ const PatientDetail = () => {
         }}
         patientId={patientId}
       />
-    </>
+    </div>
   );
 };
 

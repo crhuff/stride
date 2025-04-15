@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import {
   useGetAppointment,
   useGetPatients,
@@ -71,7 +71,21 @@ const AppointmentDetail = () => {
     ({ id }) => id === patientId,
   );
   return (
-    <>
+    <div id="appointment-detail">
+      <Box
+        className="header"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h4">
+          {(matchingPatient &&
+            `${matchingPatient?.firstName} ${matchingPatient?.lastName} - Appointment`) ||
+            id ||
+            "No patient found"}
+        </Typography>
+      </Box>
       <Card>
         <CardContent>
           <Typography variant="h5" component="div">
@@ -80,13 +94,6 @@ const AppointmentDetail = () => {
               `${matchingProvider?.firstName} ${matchingProvider?.lastName}`) ||
               id ||
               "No provider found"}
-          </Typography>
-          <Typography variant="h5" component="div">
-            Patient:{" "}
-            {(matchingPatient &&
-              `${matchingPatient?.firstName} ${matchingPatient?.lastName}`) ||
-              id ||
-              "No patient found"}
           </Typography>
           <Typography color="textSecondary">
             Date: {new Date(startTime).toLocaleDateString()}
@@ -117,11 +124,13 @@ const AppointmentDetail = () => {
       >
         Create new Note
       </Button>
-      <NoteTable
-        patientId={patientId}
-        appointmentId={appointmentId}
-        refetchTrigger={refetchTrigger}
-      />
+      <div className="table-container">
+        <NoteTable
+          patientId={patientId}
+          appointmentId={appointmentId}
+          refetchTrigger={refetchTrigger}
+        />
+      </div>
       <NoteCreateModal
         open={createNoteModalOpen}
         onClose={() => setCreateNoteModalOpen(false)}
@@ -132,7 +141,7 @@ const AppointmentDetail = () => {
         patientId={patientId}
         appointmentId={appointmentId}
       />
-    </>
+    </div>
   );
 };
 

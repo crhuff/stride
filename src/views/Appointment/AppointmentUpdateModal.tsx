@@ -111,7 +111,7 @@ const AppointmentUpdateModal: React.FC<AppointmentUpdateModalProps> = ({
       </Modal>
     );
   }
-  console.log(appointment);
+
   return (
     <Modal
       open={open}
